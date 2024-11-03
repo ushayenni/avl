@@ -1,180 +1,183 @@
+
 #include<stdio.h>
 #include<stdlib.h>
-#include<conio.h>
+
 typedef struct node
-{
-int data;
-struct node *left,*right;
-int ht;
+{  int data;
+   struct node *left,*right;
+   int ht;
 }node;
-node *insert(node *,int);
-node *delete(node *,int);
-void *preorder(node *);
-void *inorder(node *);
-node *rightrotation(node *);
-node *leftrotation(node *);
-node *RR(node *);
-node *LL(node *);
-node *RL(node *);
-node *LR(node *);
-int BH(node *);
-int height(node *);
+
+
+  node *insert(node *,int);
+  node *Delete(node *,int);
+  void  preorder(node *);
+  void  inorder(node *);
+  int   height( node *);
+  node *rotateright(node *);
+  node *rotateleft(node *);
+  node *RR(node *);
+  node *LL(node *);
+  node *LR(node *);
+  node *RL(node *);
+  int BF(node *);
 void main()
 {
     node *root=NULL;
-    int i,n,x,op;
+    int x,n,i,op;
     do
-    {
-        printf("\n1.Create\n2.Insert\n3.Delete\n4.Print\n5.Quit");
-        printf("\nEnter option:");
-        scanf("%d",&op);
-        switch(op)
         {
-            case 1:
-                printf("Enter no of elements : ");
-                scanf("%d",&n);
-                printf("Enter Tree data: ");
-                root=NULL;
-                for(i=0;i<n;i++)
+            printf("\n1)Create : ");
+            printf("\n2)Insert : ");
+            printf("\n3)Delete : ");
+            printf("\n4)Print  : ");
+            printf("\n5)Quit   : ");
+            printf("\nEnter Your Choice : ");
+            scanf("%d",&op);
+            switch(op)
                 {
-                    scanf("%d",&x);
-                    root=insert(root,x);
-                }
-                break;
-            case 2:
-                printf("Enter data:");
-                scanf("%d",&x);
-                root=insert(root,x);
-                break;
-            case 3:
-                printf("Enter data:");
-                scanf("%d",&x);
-                root=delete(root,x);
-                break;
-            case 4:
-                printf("\n\nPreorder Sequence:\n");
-                preorder(root);
-                printf("\n\nInorder Sequence:\n");
-                inorder(root);
-                break;
-        }
+                case 1:printf("\nEnter no.of elements :");
+                       scanf("%d",&n);
+                       printf("\n Enter tree data :");
+                       root=NULL;
+                       for(i=0;i<n;i++)
+                       {
+                        scanf("%d",&x);
+                        root=insert(root,x);
+                       }
+                       break;
+                case 2:printf("\nEnter a data : ");
+                       scanf("%d",&x);
+                       root=insert(root,x);
+                       break;
+                case 3:printf("\nEnter a data : ");
+                       scanf("%d",&x);
+                       root=Delete(root,x);
+                       break;
+                case 4:    printf("\n\nPreorder sequence :\n");
+                    preorder(root);
+                    printf("\n\nInorder sequence :\n");
+                    inorder(root);
+                    break;
+                 }
+
     }while(op!=5);
+
 }
-node *insert(node *T,int x)
+node * insert(node *T,int x)
 {
     if(T==NULL)
     {
-        T=(node *)malloc(sizeof(node));
+        T=(node*)malloc(sizeof(node));
         T->data=x;
         T->left=NULL;
         T->right=NULL;
     }
-    else if(x>T->data)
-    {
-        T->right=insert(T->right,x);
-        if(BH(T)==-2)
+    else
+        if(x > T->data)                // insert in right subtree
         {
-            if(x>T->right->data)
-                T=RR(T);
-            else
-                T=LR(T);
+            T->right=insert(T->right,x);
+            if(BF(T)==-2)
+                if(x>T->right->data)
+                    T=RR(T);
+                else
+                    T=RL(T);
         }
-    }
-    else if(x<T->data)
-    {
-        T->left=insert(T->left,x);
-        if(BH(T)==2)
-        {
-            if(x<T->left->data)
-                T=LL(T);
-            else
-                T=RL(T);
-        }
-    }
-    T->ht=height(T);
-    return(T);
+        else
+            if(x<T->data)
+            {
+                T->left=insert(T->left,x);
+                if(BF(T)==2)
+                    if(x < T->left->data)
+                        T=LL(T);
+                    else
+                        T=LR(T);
+            }
+            T->ht=height(T);
+            return(T);
 }
-node *delete(node *T,int x)
-{
-    node *p;
+
+node * Delete(node *T,int x)
+{       node *p;
+
     if(T==NULL)
     {
         return NULL;
     }
-    else if(x>T->data)
-    {
-        T->right=delete(T->right,x);
-        if(BH(T)==2)
-        {
-            if(BH(T->left)>=0)
-                T=LL(T);
-            else
-                T=RL(T);
-        }
-    }
-    else if(x<T->data)
-    {
-        T->left=delete(T->left,x);
-        if(BH(T)==-2)
-        {
-            if(BH(T->right)<=0)
-                T=RR(T);
-            else
-                T=LR(T);
-        }
-    }
     else
-    {
-        if(T->right!=NULL)
+
+        if(x > T->data)                // insert in right subtree
         {
-            p=T->right;
-            while((p->left)!=NULL)
-                        p=p->left;
-            T->data=p->data;
-            T->right=delete(T->right,p->data);
-            if(BH(T)==-2)
-            {
-                if (BH(T->left)>=0)
+            T->right=Delete(T->right,x);
+            if(BF(T)==2)
+                if(BF(T->left)>=0)
                     T=LL(T);
                 else
-                    T=RL(T);
-            }
+                    T=LR(T);
         }
         else
-            return(T->left);
-    }
+            if(x<T->data)
+                {
+                    T->left=Delete(T->left,x);
+                    if(BF(T)==-2)//Rebalance during windup
+                        if(BF(T->right)<=0)
+                            T=RR(T);
+                        else
+                            T=RL(T);
+                }
+            else
+              {
+                //data to be deleted is found
+                  if(T->right !=NULL)
+                  {  //delete its inorder succesor
+                      p=T->right;
+                      while(p->left != NULL)
+                      p=p->left;
+
+                      T->data=p->data;
+                      T->right=Delete(T->right,p->data);
+                      if(BF(T)==2)//Rebalance during windup
+                        if(BF(T->left)>=0)
+                            T=LL(T);
+                        else
+                            T=LR(T);
+                   }
+                  else
+                   return(T->left);
+
+              }
     T->ht=height(T);
     return(T);
 }
+
 int height(node *T)
 {
     int lh,rh;
     if(T==NULL)
-        return 0;
-    if(T->left == NULL)
+        return(0);
+    if(T->left==NULL)
         lh=0;
     else
-        lh=1+T->left->ht;preorder(T->left);
-    if(T->right == NULL)
+        lh=1+T->left->ht;
+    if(T->right==NULL)
         rh=0;
     else
         rh=1+T->right->ht;
     if(lh>rh)
         return(lh);
-    else
-        return(rh);
+    return(rh);
 }
-node *rotateright(node *x)
+node * rotateright(node *x)
 {
     node *y;
     y=x->left;
-    x->left=y->left;
+    x->left=y->right;
     y->right=x;
     x->ht=height(x);
     y->ht=height(y);
     return(y);
 }
-node *rotateleft(node *x)
+node * rotateleft(node *x)
 {
     node *y;
     y=x->right;
@@ -184,62 +187,62 @@ node *rotateleft(node *x)
     y->ht=height(y);
     return(y);
 }
-node *RR(node *T)
+node * RR(node *T)
 {
     T=rotateleft(T);
-    printf("\nSingle Leftpreorder(T->left); rotation is used...\n");
+    printf("\nSingle Left rotation is used...\n");	
     return(T);
 }
-node *LL(node *T)
+node * LL(node *T)
 {
     T=rotateright(T);
-    printf("\nSingle right rotation is used...\n");
+    printf("\nSingle Right rotation is used...\n");	
     return(T);
 }
-node *LR(node *T)
+node * LR(node *T)
 {
     T->left=rotateleft(T->left);
     T=rotateright(T);
-    printf("\nDouble left-right rotation is used...\n");
+    printf("\nDouble Left - Right rotation is used...\n");	
     return(T);
 }
-node *RL(node *T)
+node * RL(node *T)
 {
-    T->right=rotateleft(T->right);
+    T->right=rotateright(T->right);
     T=rotateleft(T);
-    printf("\nDouble right-left rotation is used...\n");
+    printf("\nDouble Right - Left rotation is used...\n");	
     return(T);
 }
-int BH(node *T)
+int BF(node *T)
 {
-int lh,rh;
-if(T==NULL)
+    int lh,rh;
+    if(T==NULL)
     return(0);
-if(T->left==NULL)
-    lh=0;
-else
-     lh=1+T->left->ht;
-if(T->right == NULL)
-    rh=0;
-else
-    rh=1+T->right->ht;
-return(lh-rh);
+    if(T->left==NULL)
+        lh=0;
+    else
+        lh=1+T->left->ht;
+    if(T->right==NULL)
+        rh=0;
+    else
+        rh=1+T->right->ht;
+    return(lh-rh);
 }
-void *preorder(node *T)
+void preorder(node *T)
 {
     if(T!=NULL)
     {
-        printf("%d(Bf=%d)",T->data,BH(T));
+        printf(" %d(Bf=%d)",T->data,BF(T));
         preorder(T->left);
         preorder(T->right);
     }
 }
-void *inorder(node *T)
+void inorder(node *T)
 {
     if(T!=NULL)
     {
         inorder(T->left);
-        printf("%d(Bf=%d)",T->data,BH(T));
+        printf(" %d(Bf=%d)",T->data,BF(T));
         inorder(T->right);
     }
 }
