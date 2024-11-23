@@ -1,0 +1,33 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#define max 500
+void bfs(int graph[max][max], int n, int start) {
+bool visited[max] = {false}; 
+int queue[max], front = 0, rear = -1; 
+    visited[start] = true;
+    queue[++rear] = start; 
+    while (front <= rear) {
+        int vertex = queue[front++]; 
+        printf("%d ", vertex); 
+               for (int i = 0; i < n; i++) {
+            if (graph[vertex][i] == 1 && !visited[i]) {
+                visited[i] = true; 
+                queue[++rear] = i; 
+            }
+        }
+    }
+}
+int main() {
+    int n = 5;
+    int graph[max][max] = {
+        {0, 1, 0, 1, 0},
+        {1, 0, 1, 0, 1},
+        {0, 1, 0, 0, 1},
+        {1, 0, 0, 0, 1},
+        {0, 1, 1, 1, 0}
+    };
+    printf("BFT (Adjacency matrix): ");
+    bfs(graph, n, 0); 
+    return 0;
+}
