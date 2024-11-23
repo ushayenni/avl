@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#define max 100
+void dfs(int graph[max][max], int n, int start, bool visited[max]) {
+      visited[start] = true;
+    printf("%d ", start);
+        for (int i = 0; i < n; i++) {
+        if (graph[start][i] == 1 && !visited[i]) {
+            dfs(graph, n, i, visited);
+        }
+    }
+}
+int main() {
+    int n = 5;
+    int graph[max][max] = {
+        {0, 1, 0, 1, 0},
+        {1, 0, 1, 0, 1},
+        {0, 1, 0, 0, 1},
+        {1, 0, 0, 0, 1},
+        {0, 1, 1, 1, 0}
+    };
+    bool visited[max] = {false}; 
+    printf("DFS (Adjacency matrix): ");
+    dfs(graph, n, 0, visited); 
+    return 0;   }
