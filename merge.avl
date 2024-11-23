@@ -1,0 +1,69 @@
+#include<stdio.h>
+void mergesort(int,int);
+void merge(int,int,int);
+void display();
+int a[20],n;
+void main()
+{
+int i;
+printf("enter n:");
+scanf("%d",&n);
+printf("enter %d elements:",n);
+    for(i=0;i<n;i++)
+scanf("%d",&a[i]);
+printf("before sorting:\n");
+    display();
+mergesort(0,n-1);
+printf("after sorting:\n");
+    display();
+}
+void mergesort(int low,int high)
+{
+    int mid;
+    if(low<high)
+    {
+        mid=(low+high)/2;
+mergesort(low,mid);
+mergesort(mid+1,high);
+        merge(low,mid,high);
+    }
+}
+void merge(int low,int mid,int high)
+{
+    int i,j,k,h,temp[20];
+i=h=low;
+    j=mid+1;
+    while(h<=mid && j<=high)
+    {
+        if(a[h]<=a[j])
+        {
+            temp[i]=a[h];
+            h++;
+        }
+        else
+        {
+            temp[i]=a[j];
+j++;
+        }
+i++;
+    }
+    if(h>mid)
+    {
+        for(k=j;k<=high;k++,i++)
+        temp[i]=a[k];
+    }
+    else
+    {
+        for(k=h;k<=mid;k++,i++)
+        temp[i]=a[k];
+    }
+    for(k=0;k<=high;k++)
+    a[k]=temp[k];
+}
+void display()
+{
+    int i;
+    for(i=0;i<n;i++)
+printf("%5d",a[i]);
+printf("\n");
+}
