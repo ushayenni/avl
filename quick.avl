@@ -1,0 +1,59 @@
+#include<stdio.h>
+void quick(int,int);
+void display(int[],int); 
+int partition(int,int);
+int a[30],n;
+void main()
+{
+    int i;
+printf("enter no. of elements:");
+scanf("%d",&n);
+printf("enter %d elements:",n);
+    for(i=0;i<n;i++)
+scanf("%d",&a[i]);
+printf("\n before sorting:\n");
+    display(a,n);
+    quick(0,n-1);
+printf("\n after sorting:\n");
+    display(a,n);
+}
+void quick(int low,int high)
+{
+    int p;
+    if(low<high)
+    {
+        p=partition(low,high);
+        quick(low,p-1);
+        quick(p+1,high);
+    }
+}
+int partition(int low,int high)
+{
+    int i,j,pivot,temp;
+    pivot=a[low];
+i=low;
+    j=high;
+    while(i<j)
+    {
+        while(a[i]<=pivot)
+i++;
+        while(a[j]>pivot)
+        j--;
+        if(i<j)
+        {
+            temp=a[i];
+            a[i]=a[j];
+            a[j]=temp;
+        }
+    }
+    temp=a[low];
+    a[low]=a[j];
+    a[j]=temp;
+    return j;
+}
+void display(int a[],int n)
+{
+    int i;
+    for(i=0;i<n;i++)
+printf("%d\t",a[i]);
+}
