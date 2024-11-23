@@ -1,0 +1,44 @@
+#include <stdio.h>
+#define MAX_ITEMS 100
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+ 
+int knapsack(int weight[], int value[], int n, int capacity, int index) {
+    
+    if (index == n || capacity == 0) {
+        return 0;
+    }
+   
+    int skip = knapsack(weight, value, n, capacity, index + 1);
+    
+    int include = 0;
+    if (weight[index] <= capacity) {
+        include = value[index] + knapsack(weight, value, n, capacity - weight[index], index + 1);
+}
+    
+return max(skip, include);
+}
+int main() {
+    int n, capacity;
+    int weight[MAX_ITEMS], value[MAX_ITEMS];
+     
+    printf("Enter the number of items: ");
+    scanf("%d", &n);
+    
+    printf("Enter the weights and values of items:\n");
+    for (int i = 0; i < n; i++) {
+        printf("Item %d - Weight: ", i + 1);
+        scanf("%d", &weight[i]);
+        printf("Item %d - Value: ", i + 1);
+        scanf("%d", &value[i]);
+    }
+    
+    printf("Enter the capacity of the knapsack: ");
+    scanf("%d", &capacity);
+     
+    int maxValue = knapsack(weight, value, n, capacity, 0);
+    printf("Maximum value in knapsack = %d\n", maxValue);
+    return 0;
+}
+
